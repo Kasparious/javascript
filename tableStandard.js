@@ -370,21 +370,26 @@ document.getElementById('contextDuplicate').addEventListener('click', () => {
             input.value = cell.textContent;
             cell.textContent = '';
             cell.appendChild(input);
-    
+//
+            // if (cell.classList.contains('action-cell')) {
+            //     continue; // Ignora a célula de ação
+            // }
+//
             // Coloca o foco na célula que foi clicada
-            if (cell === cellToFocus) {
+            if (cell === cellToFocus) {s
                 input.focus();
             }
         });
-    
-        const actionTd = row.querySelector('td:last-child');
-        actionTd.innerHTML = '';
-    
+
+        const actionTd = document.createElement('td'); // Nova célula para os ícones
+        row.appendChild(actionTd);
+      
         const saveIcon = createIcon('💾', 'Salvar', () => saveEditRow(row, originalData));
         const cancelIcon = createIcon('❌', 'Cancelar', () => cancelEditRow());
-    
+      
         actionTd.appendChild(saveIcon);
         actionTd.appendChild(cancelIcon);
+
     
         // Adiciona o comportamento para ESC e ENTER durante a edição
         row.addEventListener('keydown', (e) => {
@@ -428,6 +433,12 @@ document.getElementById('contextDuplicate').addEventListener('click', () => {
 
 //-------------------------------------------------------------------------------------------------------
     function resetRowAfterEdit(row) {
+// remover célula adicionada para edição
+        const actionCell = row.querySelector('.action-cell');
+        if (actionCell) {
+          row.removeChild(actionCell);
+        }
+//
         const actionTd = row.querySelector('td:last-child');
         actionTd.innerHTML = '';
 //        createActionIcons(actionTd, row);
